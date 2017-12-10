@@ -10,10 +10,10 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('dynamodbupdate')
 print(table.creation_date_time);
 async def main():
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         with table.batch_writer() as batch:
             loop1 = asyncio.get_event_loop()
-            for i in range(0,3200):
+            for i in range(0,10):
                 Item={
                          'firstname': 'XXXX-'+str(i),
                          'lastname': 'YYYY-'+str(i),
@@ -24,8 +24,8 @@ async def main():
 
 
 loop = asyncio.get_event_loop()
-date= str(datetime.now())
-print(date)
+date1= datetime.now()
+#print(date)
 loop.run_until_complete(main())
-date= str(datetime.now())
-print(date)
+date2= datetime.now()
+print(date2-date1)

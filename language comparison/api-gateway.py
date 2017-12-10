@@ -6,19 +6,19 @@ from datetime import datetime
 
 async def main():
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
         loop1 = asyncio.get_event_loop()
         res=[]
-        for i in range(0,400):
-            data = {"operation":"create","tableName":"LambdaTable","payload":{"Item":{"Id":"google-"+str(i),"name":"mountain view-"+str(i)}}}
-            url="https://qz1skemd1d.execute-api.us-east-2.amazonaws.com/prod/MyLambdaMicroservice"
-            res.append(
-            loop1.run_in_executor(executor,
+
+        data = {"operation":"create","tableName":"LambdaTable","payload":{"Item":{"Id":"google-","name":"mountain view-"}}}
+        url="https://80u64utx9j.execute-api.us-east-2.amazonaws.com/prod/DynamoDBManage"
+        res.append(
+        loop1.run_in_executor(executor,
                                  requests.post,
                                  url,
                                  json.dumps(data)
                                 )
-            )
+        )
 
         for response in await asyncio.gather(*res):
             print(response)

@@ -2,8 +2,10 @@ from cloudant.client import Cloudant
 from cloudant.error import CloudantException
 from cloudant.result import Result, ResultByKey
 from datetime import datetime
+import  concurrent.futures
+import asyncio
 
-client=Cloudant("636d3e65-c603-43de-90b9-d355c4992b06-bluemix","38094ac5cbc8ced89e66d2d85beb5009011735be0edf0f5aaeb9ed428004ecfd",url="http://636d3e65-c603-43de-90b9-d355c4992b06-bluemix.cloudant.com")
+client=Cloudant("e8425b33-b22d-46b2-810d-99ddd319e9b9-bluemix","52743ce84f5e992bf1682440998c43138b44873bda027b138b6f7cd714c10cef",url="https://e8425b33-b22d-46b2-810d-99ddd319e9b9-bluemix:52743ce84f5e992bf1682440998c43138b44873bda027b138b6f7cd714c10cef@e8425b33-b22d-46b2-810d-99ddd319e9b9-bluemix.cloudant.com")
 client.connect();
 databaseName = "names"
 
@@ -19,7 +21,21 @@ else:
     my_database=client.create_database(databaseName)
 
 
-for i in range(1,10):
-    my_document = my_database['id'+str(i)]
-    my_document.delete()
+# for i in range(0,1600):
+#     my_document = my_database['id'+str(i)]
+#     my_document.delete()
 
+async def main():
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            loop1 = asyncio.get_event_loop()
+            for i in range(2052,2999):
+                my_document = my_database['id'+str(i)]
+
+                loop1.run_in_executor(executor,my_document.delete)
+
+loop = asyncio.get_event_loop()
+date1= datetime.now()
+#print(date)
+loop.run_until_complete(main())
+date2= datetime.now()
+print(date2-date1)

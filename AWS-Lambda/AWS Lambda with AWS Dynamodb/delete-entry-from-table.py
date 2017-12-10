@@ -11,7 +11,7 @@ print(date)
 # Create the DynamoDB table.
 table = dynamodb.Table('dynamodbupdate')
 with table.batch_writer() as batch:
-    for i in range(1,100):
+    for i in range(1,3200):
         batch.delete_item(Key={
              'firstname': 'XXXX-'+str(i),
              'lastname': 'YYYY-'+str(i)

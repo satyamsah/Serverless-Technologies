@@ -8,20 +8,20 @@ import configparser
 async def main(url):
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         loop1 = asyncio.get_event_loop()
-        #res=[]
-        for i in range(0,1400):
+        res=[]
+        for i in range(0,3200):
             data ={"name":"google-"+str(i)}
-            #url="https://us-central1-evocative-tide-183917.cloudfunctions.net/helloHttp"
-           # res.append(
+            url="https://us-central1-evocative-tide-183917.cloudfunctions.net/helloHttp"
+            res.append(
             loop1.run_in_executor(executor,
                                  requests.post,
                                  url,
                                  data
                                 )
-           # )
+            )
 
-       # for response in await asyncio.gather(*res):
-       #     print(response.text)
+        for response in await asyncio.gather(*res):
+            print(response.text)
 
 
 

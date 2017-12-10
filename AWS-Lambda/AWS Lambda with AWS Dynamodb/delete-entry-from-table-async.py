@@ -7,15 +7,16 @@ dynamodb = boto3.resource('dynamodb')
 
 
 # Create the DynamoDB table.
-table = dynamodb.Table('LambdaTable')
+table = dynamodb.Table('dynamodbupdate')
 print(table.creation_date_time);
 async def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         with table.batch_writer() as batch:
             loop1 = asyncio.get_event_loop()
-            for i in range(1,3200):
+            for i in range(0,3000):
                 item={
-                         'Id': 'google-'+str(i)
+                         'firstname': 'XXXX-'+str(i),
+                 'lastname': 'YYYY-'+str(i)
                     }
 
                 loop1.run_in_executor(executor,batch.delete_item,item)
